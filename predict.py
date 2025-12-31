@@ -26,17 +26,18 @@ def get_input_args():
 
     return parser.parse_args()
 
-def load_checkpoint(filepath):
+def load_checkpoint(filepath, device='cpu'):
     """
     Load a checkpoint and rebuild the model.
 
     Args:
         filepath: Path to the checkpoint file
+        device: Device to load the checkpoint to ('cpu' or 'cuda')
 
     Returns:
         model: The rebuilt model with loaded weights
     """
-    checkpoint = torch.load(filepath, map_location='cpu')
+    checkpoint = torch.load(filepath, map_location=device)
 
     # Get architecture from checkpoint
     arch = checkpoint['architecture']
@@ -242,7 +243,7 @@ def main():
 
     # Load checkpoint
     print("\nLoading checkpoint...")
-    model = load_checkpoint(args.checkpoint)
+    model = load_checkpoint(args.checkpoint, device)
     print("Checkpoint loaded successfully!")
 
     # Load category names if provided
